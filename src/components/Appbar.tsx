@@ -5,7 +5,7 @@ import { Tooltip } from "./ui/Tooltip";
 import { useAuth } from "@/hooks/useAuth";
 
 export function Appbar() {
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, signOut } = useAuth();
 
   return (
     <div className="fixed right-4 top-4 flex items-center gap-4">
@@ -13,7 +13,12 @@ export function Appbar() {
 
       {isAuthenticated && (
         <Tooltip content="Sair">
-          <Button variant="secondary" size="icon" className="rounded-full">
+          <Button
+            variant="secondary"
+            size="icon"
+            className="rounded-full"
+            onClick={signOut}
+          >
             <LogOutIcon className="w4 h-4" />
           </Button>
         </Tooltip>

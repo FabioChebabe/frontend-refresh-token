@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { Label } from "@/components/ui/Label";
+import { signUp } from "@/services/AuthService";
 import { useForm } from "react-hook-form";
 
 interface IFormData {
@@ -18,8 +19,10 @@ export function SignUp() {
     },
   });
 
-  const handleSubmit = form.handleSubmit((data) => {
-    console.log("Sign in data:", data);
+  const handleSubmit = form.handleSubmit(async ({ email, name, password }) => {
+    const response = await signUp({ email, name, password });
+
+    console.log(response);
   });
 
   return (

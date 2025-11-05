@@ -1,7 +1,10 @@
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { Label } from "@/components/ui/Label";
+import { useAuth } from "@/hooks/useAuth";
+import { Loader2 } from "lucide-react";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 
 interface IFormData {
   email: string;
@@ -9,6 +12,7 @@ interface IFormData {
 }
 
 export function SignIn() {
+  const { signIn } = useAuth();
   const form = useForm<IFormData>({
     defaultValues: {
       email: "",
@@ -16,8 +20,13 @@ export function SignIn() {
     },
   });
 
-  const handleSubmit = form.handleSubmit((data) => {
-    console.log("Sign in data:", data);
+  const handleSubmit = form.handleSubmit(async ({ email, password }) => {
+    try {
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+      await signIn({ email, password });
+    } catch (error) {
+      toast.error("Credenciais invalidas");
+    }
   });
 
   return (
@@ -35,7 +44,13 @@ export function SignIn() {
           <Input id="password" type="password" {...form.register("password")} />
         </div>
 
-        <Button className="mt-3">Entrar</Button>
+        <Button className="mt-3" disabled={form.formState.isSubmitting}>
+          {form.formState.isSubmitting ? (
+            <Loader2 className="animate-spin" />
+          ) : (
+            "Entrar"
+          )}
+        </Button>
       </form>
     </div>
   );
